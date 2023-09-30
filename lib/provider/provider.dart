@@ -15,10 +15,9 @@ class HomeRowHeaderListNotifier extends StateNotifier<List<HomeRowHeaderItem>> {
   }
 
   void removeHomeRowHeader(int id) {
-    print('sjj:$id');
+   // print('sjj:$id');
     print(state[id].id);
     state = state.where((item) => item.id != id).toList();
-    print(state);
   }
 }
 
