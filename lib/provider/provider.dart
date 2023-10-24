@@ -1,39 +1,21 @@
 // Step 1: Create a custom StateNotifier class
-import 'package:budget_app/view/components/form_line_widget.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:budget_app/view/home.dart';
 
-class HomeRowHeaderListNotifier extends StateNotifier<List<HomeRowHeaderItem>> {
-  HomeRowHeaderListNotifier()
-      : super([HomeRowHeaderItem(id: 0, widget: FormFieldLine())]);
+class HomeRowHeaderItem {
+   int id;
+ String expenses;
+   int budget;
+   int usedBal;
+   int currentBal;
 
-  void addHomeRowHeader(Widget homeRowHeader) {
-    final newCounter = state.length;
-    final homeRowHeaderItem =
-        HomeRowHeaderItem(id: newCounter, widget: homeRowHeader);
-    state = [...state, homeRowHeaderItem];
-  }
-
-  void removeHomeRowHeader(int id) {
-   // print('sjj:$id');
-    print(state[id].id);
-    state = state.where((item) => item.id != id).toList();
-  }
-}
-
-// Step 2: Create a StateNotifierProvider
-final homeRowHeaderListProvider =
-    StateNotifierProvider<HomeRowHeaderListNotifier, List<HomeRowHeaderItem>>(
-  (ref) => HomeRowHeaderListNotifier(),
-);
-
-class HomeRowHeaderItem extends StatelessWidget {
-  final int id;
-  final Widget widget;
-
-  const HomeRowHeaderItem({super.key, required this.id, required this.widget});
+   HomeRowHeaderItem(
+      {required this.expenses,
+      required this.budget,
+      required this.usedBal,
+      required this.currentBal,
+      required this.id});
   @override
-  Widget build(BuildContext context) {
-    return widget;
+  String toString() {
+    return 'HomeRowHeaderItem(id: $id)';
   }
 }

@@ -1,18 +1,51 @@
 import 'package:budget_app/provider/provider.dart';
 import 'package:budget_app/view/components/form_line_widget.dart';
 import 'package:budget_app/view/components/home_header_card.dart';
+import 'package:budget_app/view/components/home_row_form.dart';
 import 'package:budget_app/view/components/home_row_header.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter/foundation.dart';
 
-class MyHomePage extends ConsumerWidget {
-  MyHomePage({super.key});
-  final String mode = kDebugMode ? 'Debug Mode' : 'Release Mode';
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    //final formLine = ref.watch(homeRowHeaderListProvider);
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  List<HomeRowHeaderItem> homeRow = [];
+  int count = 0;
+
+  void addForm() {
+    count += 1;
+    setState(() {
+      homeRow.add(HomeRowHeaderItem(
+        id: count,
+        budget: 0,
+        currentBal: 0,
+        expenses: '',
+        usedBal: 0,
+      ));
+      print(homeRow);
+    });
+  }
+
+  void removeForm(int id) {
+    setState(() {
+      if (homeRow.length > 1) {
+        homeRow.removeWhere((element) => element.id == id);
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    addForm();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -22,7 +55,7 @@ class MyHomePage extends ConsumerWidget {
           const HeaderCard(),
           Padding(
               padding: const EdgeInsets.only(left: 20),
-              child: Text('Spending Plan: $mode',
+              child: Text('Spending Plan:',
                   style: TextStyle(color: Colors.grey[800], fontSize: 16))),
           const Padding(
             padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
@@ -34,16 +67,24 @@ class MyHomePage extends ConsumerWidget {
               icon: Spacer(),
             ),
           ),
-          Expanded(child: FormFieldLine())
+          Expanded(
+            child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: homeRow.length,
+                itemBuilder: (context, index) {
+                  final item = homeRow[index];
+                  // print('sksdjd:${item}');
+                  return HomeRowForm(
+                    homeRowHeaderItem: item,
+                    onPressed: () => removeForm(item.id),
+                  );
+                }),
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.grey[200],
-        onPressed: () {
-          ref
-              .read(homeRowHeaderListProvider.notifier)
-              .addHomeRowHeader(FormFieldLine());
-        },
+        onPressed: () => addForm(),
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),

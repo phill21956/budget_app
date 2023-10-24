@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+final ldataList = Provider((ref) => list);
+final  list = [
+  'Personal',
+  'Church',
+  'Home',
+  'Work',
+  'Givings',
+  'Tithes',
+  'Others',
+];
+
 final formFieldLineProvider =
     StateNotifierProvider<FormProvider, FormProviderData>((ref) {
   return FormProvider();
 });
 
-// final ldataList = Provider((ref) => list);
-// final  list = [
-//   'Personal',
-//   'Church',
-//   'Home',
-//   'Work',
-//   'Givings',
-//   'Tithes',
-//   'Others',
-// ];
+
 
 class FormProviderData {
   final List<String> categories;
